@@ -22,8 +22,12 @@ $(EXE): $(COBJS)
 	g++ -o$(EXE) $(OUTDIR)$(COBJS) $(INCLUDE) $(INCOSG) $(LDFLAGS) $(LDLIBS) $(LDOSG)
 
 
-$(COBJS): $(OUTDIR)%.o : %.cpp 
-	$(CC) $(CFLAGS) -o $@ $< $(INCLUDE) $(INCOSG) $(LDFLAGS) $(LDLIBS) $(LDOSG)
+$(COBJS): $(OUTDIR)%.o : %.cpp | obj
+	$(CC) $(CFLAGS) -o $@ $< $(INCLUDE) $(INCOSG) $(LDFLAGS)
+	$(LDLIBS) $(LDOSG)
+
+obj:
+	mkdir -p $(OUTDIR)
 
 clean:
 	rm -f $(OUTDIR)*.o $(EXE)
