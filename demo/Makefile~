@@ -21,7 +21,7 @@ $(EXE): $(COBJS)
 
 
 $(COBJS): %.o : %.cpp 
-	$(CC) $(CFLAGS) -o $@ $< $(INCLUDE) $(INCOSG) $(LDFLAGS) $(LDLIBS) $(LDOSG)
+	$(CC) $(CFLAGS) -o $@ $< 
 
 clean:
-	rm *.o Tuto5
+	rm *.o

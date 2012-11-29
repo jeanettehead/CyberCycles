@@ -1,4 +1,4 @@
-CSRCS=Tuto5.cpp
+CSRCS=states.h main.cpp
 
 CFLAGS =  -c -O3 -DNDEBUG -fPIC
 INCLUDE = -I. -I/usr/include/ -I/usr/include/X11/ -I/usr/local/include/GL 
@@ -12,7 +12,7 @@ COBJS=$(patsubst %.cpp,%.o,$(CSRCS))
 
 CC = g++
 
-EXE=Tuto5
+EXE=CyberCycles
 
 all: $(EXE)
 
@@ -24,4 +24,4 @@ $(COBJS): %.o : %.cpp
 	$(CC) $(CFLAGS) -o $@ $< $(INCLUDE) $(INCOSG) $(LDFLAGS) $(LDLIBS) $(LDOSG)
 
 clean:
-	rm *.o Tuto5
+	rm *.o $(EXE)
