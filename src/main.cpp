@@ -15,6 +15,8 @@ int main()
 	viewer.realize();
 	while(!viewer.done())
 	{
+		viewer.frame();
+		viewer.requestRedraw();
 	}
 	return 0;
 }

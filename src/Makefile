@@ -1,4 +1,6 @@
-CSRCS=states.h main.cpp
+CSRCS=main.cpp
+
+OUTDIR=../bin/
 
 CFLAGS =  -c -O3 -DNDEBUG -fPIC
 INCLUDE = -I. -I/usr/include/ -I/usr/include/X11/ -I/usr/local/include/GL 
@@ -8,20 +10,20 @@ LDLIBS = -lm -ldl -lGL -lGLU -lpthread -lXext -lX11
 LDFLAGS =  -L. -L/usr/lib -L/usr/X11R6/lib -L/usr/local/lib
 LDOSG = -L/research/bacoesen/osg4/OpenSceneGraph-3.0.1/lib -losg -losgViewer -losgSim
 
-COBJS=$(patsubst %.cpp,%.o,$(CSRCS))
+COBJS=$(patsubst %.cpp,$(OUTDIR)%.o,$(CSRCS))
 
 CC = g++
 
-EXE=CyberCycles
+EXE=../bin/CyberCycles
 
 all: $(EXE)
 
 $(EXE): $(COBJS) 
-	g++ -o$(EXE) $(COBJS) $(INCLUDE) $(INCOSG) $(LDFLAGS) $(LDLIBS) $(LDOSG)
+	g++ -o$(EXE) $(OUTDIR)$(COBJS) $(INCLUDE) $(INCOSG) $(LDFLAGS) $(LDLIBS) $(LDOSG)
 
 
-$(COBJS): %.o : %.cpp 
+$(COBJS): $(OUTDIR)%.o : %.cpp 
 	$(CC) $(CFLAGS) -o $@ $< $(INCLUDE) $(INCOSG) $(LDFLAGS) $(LDLIBS) $(LDOSG)
 
 clean:
-	rm *.o $(EXE)
+	rm -f $(OUTDIR)*.o $(EXE)
