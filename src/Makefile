@@ -1,4 +1,4 @@
-CSRCS=main.cpp
+CSRCS=main.cpp MainMenuKeyboardHandler.cpp
 
 OUTDIR=../bin/
 
