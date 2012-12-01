@@ -1,12 +1,19 @@
 #ifndef MAINMENU_H
 #define MAINMENU_H
 
+#include <osgViewer/Viewer>
+#include <osg/LineWidth>
+#include <osg/Geometry>
+#include <osg/ShapeDrawable>
+
+using namespace osg;
 class MainMenu
 {
-	osg::ref_ptr<osg::Group> menu_node;
+	ref_ptr<Group> menu_node;
 	
 	public:	
-		MainMenu(osg::ref_ptr<osg::Group> root);
+		MainMenu();
+		ref_ptr<Node> getMenuNode();
 };
 
 #endif
