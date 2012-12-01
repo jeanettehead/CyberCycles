@@ -16,12 +16,16 @@ StateManager::StateManager()
 
 void StateManager::enterMenu(osg::ref_ptr<osg::Group> root, ref_ptr<osgViewer::Viewer> viewer)
 {
+	menuRoot = root;
+	menuViewer = viewer;
+	
 	//makes menu adds it to the graph
 	MainMenu* mm = new MainMenu();
-	root->addChild(mm->getMenuNode());
+	mainMenuNode = mm->getMenuNode();
+	root->addChild(mainMenuNode);
 	
 	//adds the keyboard listener to the graph
-	MainMenuKeyboardHandler* mmkb = new MainMenuKeyboardHandler();
+	MainMenuKeyboardHandler* mmkb = new MainMenuKeyboardHandler(this);
 	viewer->addEventHandler(mmkb);
 	
 	//===== camera code chunk =====
@@ -39,4 +43,9 @@ void StateManager::enterMenu(osg::ref_ptr<osg::Group> root, ref_ptr<osgViewer::V
 	
 	viewer->setCamera(mainMenuCam);
 	//===== end camera code chunk
+}
+
+void StateManager::exitMenu()
+{
+	menuRoot->removeChild(mainMenuNode);
 }
