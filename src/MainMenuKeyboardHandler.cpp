@@ -11,7 +11,10 @@ using namespace std; //cause c++ is stupid
 bool MainMenuKeyboardHandler::handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter& aa)
 {
 	//for debuging
-	std::cout << "you pressed a key in the main menu" << std::endl;
+	if(ea.getEventType() == osgGA::GUIEventAdapter::KEYDOWN)
+	{
+		std::cout << "you pressed a key in the main menu" << std::endl;
+	}
 
 	return true;
 }
