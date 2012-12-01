@@ -2,6 +2,8 @@
 #include "StateManager.h"
 #include "MainMenuKeyboardHandler.h"
 
+using namespace osg;
+
 //===== code that starts asset loader =====
 
 //===== end code that starts asset loader =====
@@ -13,20 +15,20 @@
 int main()
 {	
 	//Creating the viewer	
-	osgViewer::Viewer viewer;
+	ref_ptr<osgViewer::Viewer> viewer (new osgViewer::Viewer);
 	
 	//Creating the root node
-	osg::ref_ptr<osg::Group> root (new osg::Group);
+	ref_ptr<Group> root (new Group);
 	
 	StateManager* sm = new StateManager();
 	sm->enterMenu(root, viewer);
 	
-	viewer.setSceneData(root);
-	viewer.realize(); //makes it so the viewer works
-	while(!viewer.done())
+	viewer->setSceneData(root);
+	viewer->realize(); //makes it so the viewer works
+	while(!viewer->done())
 	{
-		viewer.frame();
-		viewer.requestRedraw();
+		viewer->frame();
+		viewer->requestRedraw();
 	}
 	return 0;
 }

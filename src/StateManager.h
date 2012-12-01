@@ -3,6 +3,8 @@
 #include <osg/Group>
 #include <osgViewer/Viewer>
 
+using namespace osg;
+
 class StateManager
 {
 	public:
@@ -16,9 +18,12 @@ class StateManager
 		state currentState;
 		StateManager();
 
-		void enterMenu(osg::ref_ptr<osg::Group> root, osgViewer::Viewer viewer);
+		void enterMenu(osg::ref_ptr<osg::Group> root, ref_ptr<osgViewer::Viewer> viewer);
 		void exitMenu();
 		void enterGame();
 		void exitGame();
+	
+	private:
+		ref_ptr<Camera> mainMenuCam;
 };
 #endif
