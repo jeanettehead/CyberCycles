@@ -6,7 +6,8 @@
 #include "MainMenuKeyboardHandler.h"
 #include <iostream> //fordebuging purposes
 
-using namespace std; //cause c++ is stupid
+using namespace std;
+using namespace osg;
 
 MainMenuKeyboardHandler::MainMenuKeyboardHandler(StateManager* state)
 {
@@ -21,6 +22,7 @@ bool MainMenuKeyboardHandler::handle(const osgGA::GUIEventAdapter& ea,osgGA::GUI
 		{
 			std::cout << "-----> It was e" << std::endl;
 			sm->exitMenu();
+			sm->enterGame();
 		}
 	}
 

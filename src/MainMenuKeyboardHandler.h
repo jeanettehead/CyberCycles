@@ -10,7 +10,6 @@
 #include "StateManager.h"
 
 using namespace osg;
-
 class MainMenuKeyboardHandler : public osgGA::GUIEventHandler
 {
 	public:
