@@ -22,6 +22,7 @@ class StateManager
 		
 		void enterMenu(ref_ptr<Group> root, ref_ptr<osgViewer::Viewer> viewer);
 		void exitMenu();
+		
 		void enterGame(ref_ptr<osg::Group> root, ref_ptr<osgViewer::Viewer> viewer);
 		void enterGame();
 		void exitGame();

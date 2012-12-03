@@ -4,6 +4,7 @@
 #include "StateManager.h"
 #include "mainmenu.h"
 #include "MainMenuKeyboardHandler.h"
+#include "GameKeyboardHandler.h"
 #include <osgViewer/View>
 #include <iostream>
 #include <list>
@@ -16,23 +17,9 @@ StateManager::StateManager()
 	currentState = MENU;
 }
 
-/**
-* This method was copied from the internet
-* apperently osg does not provide its own method to do this
-*/
 void StateManager::removeAllEventHandlers()
 {
-	//note that the white space in the following line are required to make it work
-	list<ref_ptr<osgGA::GUIEventHandler>, allocator<ref_ptr<osgGA::GUIEventHandler> > > test;
-	test = menuViewer->getEventHandlers();
-	if(test.empty())
-	{
-		cout << "The EventHandler list is empty." << endl;
-	}
-	else
-	{
-		test.clear();
-	}
+	(menuViewer->getEventHandlers()).clear();
 }
 
 void StateManager::enterMenu(osg::ref_ptr<osg::Group> root, ref_ptr<osgViewer::Viewer> viewer)
@@ -69,7 +56,7 @@ void StateManager::enterMenu(osg::ref_ptr<osg::Group> root, ref_ptr<osgViewer::V
 void StateManager::exitMenu()
 {
 	menuRoot->removeChild(mainMenuNode);
-	removeAllEventHandlers();	
+	removeAllEventHandlers();
 }
 
 /**
@@ -94,26 +81,40 @@ void StateManager::enterGame()
 
 void StateManager::enterGame(osg::ref_ptr<osg::Group> root, ref_ptr<osgViewer::Viewer> viewer)
 {
+	currentState = GAME;
+	
 	gameRoot = root;
 	gameViewer = viewer;
 	
 	//need to actually create game node
 	
 	//need to add keyboard listener
+	GameKeyboardHandler* gkb = new GameKeyboardHandler(this);
+	viewer->addEventHandler(gkb);
 	
 	//===== camera code chunk =====
-	mainMenuCam = new Camera;
+	gameCam = new Camera;
 	
 	//background color
-	mainMenuCam->setClearColor(osg::Vec4(0, 0, 255, 1));
+	gameCam->setClearColor(osg::Vec4(0, 0, 255, 1));
  	
  	// set dimensions of the view volume
-	mainMenuCam->setProjectionMatrixAsPerspective(30, 4.0 / 3.0, 0.1, 100);
-	mainMenuCam->setViewMatrixAsLookAt(
+	gameCam->setProjectionMatrixAsPerspective(30, 4.0 / 3.0, 0.1, 100);
+	gameCam->setViewMatrixAsLookAt(
 		osg::Vec3(-7.5, 7.5, 0),// location
 		osg::Vec3(0, 0, 0),	// gaze at
 		osg::Vec3(0, 1, 0));	// up vector
 	
-	viewer->setCamera(mainMenuCam);
-	//===== end camera code chunk
+	/*if(viewer == NULL)
+	{
+		cout << "The viewer is null." << endl;
+		cout.flush();
+		exit(1);
+	}
+	else
+	{
+		cout << "The viewer is not null." << endl;
+	}*/
+	viewer->setCamera(gameCam);
+	//===== end camera code chunk ===== */
 }
