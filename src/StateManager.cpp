@@ -37,19 +37,22 @@ void StateManager::enterMenu(osg::ref_ptr<osg::Group> root, ref_ptr<osgViewer::V
 	viewer->addEventHandler(mmkb);
 	
 	//===== camera code chunk =====
-	mainMenuCam = new Camera;
+	if(cam == NULL)
+	{
+		cam = new Camera;
+		viewer->setCamera(cam);
+	}
 	
 	//background color
-	mainMenuCam->setClearColor(osg::Vec4(0, 0, 255, 1));
+	cam->setClearColor(osg::Vec4(0, 0, 255, 1));
  	
  	// set dimensions of the view volume
-	mainMenuCam->setProjectionMatrixAsPerspective(30, 4.0 / 3.0, 0.1, 100);
-	mainMenuCam->setViewMatrixAsLookAt(
+	cam->setProjectionMatrixAsPerspective(30, 4.0 / 3.0, 0.1, 100);
+	cam->setViewMatrixAsLookAt(
 		osg::Vec3(-7.5, 7.5, 0),// location
 		osg::Vec3(0, 0, 0),	// gaze at
 		osg::Vec3(0, 1, 0));	// up vector
 	
-	viewer->setCamera(mainMenuCam);
 	//===== end camera code chunk
 }
 
@@ -93,28 +96,20 @@ void StateManager::enterGame(osg::ref_ptr<osg::Group> root, ref_ptr<osgViewer::V
 	viewer->addEventHandler(gkb);
 	
 	//===== camera code chunk =====
-	gameCam = new Camera;
+	if(cam == NULL)
+	{
+		cam = new Camera;
+		viewer->setCamera(cam);
+	}
 	
 	//background color
-	gameCam->setClearColor(osg::Vec4(0, 0, 255, 1));
+	cam->setClearColor(osg::Vec4(0, 0, 0, 1));
  	
  	// set dimensions of the view volume
-	gameCam->setProjectionMatrixAsPerspective(30, 4.0 / 3.0, 0.1, 100);
-	gameCam->setViewMatrixAsLookAt(
+	cam->setProjectionMatrixAsPerspective(30, 4.0 / 3.0, 0.1, 100);
+	cam->setViewMatrixAsLookAt(
 		osg::Vec3(-7.5, 7.5, 0),// location
 		osg::Vec3(0, 0, 0),	// gaze at
 		osg::Vec3(0, 1, 0));	// up vector
-	
-	/*if(viewer == NULL)
-	{
-		cout << "The viewer is null." << endl;
-		cout.flush();
-		exit(1);
-	}
-	else
-	{
-		cout << "The viewer is not null." << endl;
-	}*/
-	viewer->setCamera(gameCam);
 	//===== end camera code chunk ===== */
 }

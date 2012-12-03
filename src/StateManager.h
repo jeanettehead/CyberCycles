@@ -28,6 +28,12 @@ class StateManager
 		void exitGame();
 	
 	private:
+		/* Have to use the one camera for all states for now
+		 * otherwise segmentation fault
+		 * most likely to do with threading that is handled on the osg side
+		 */
+		ref_ptr<Camera> cam;
+		
 		//main menu items
 		ref_ptr<Node> mainMenuNode;
 		ref_ptr<Camera> mainMenuCam;
