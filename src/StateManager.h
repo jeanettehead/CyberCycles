@@ -1,5 +1,6 @@
 #ifndef STATES_H
 #define STATES_H
+#include "game.h"
 #include <osg/Group>
 #include <osgViewer/Viewer>
 #include <osg/Camera>
@@ -16,6 +17,8 @@ class StateManager
 			GAME,
 			EXIT
 		};
+		
+		bool transFromMenuToGame;
 		
 		state currentState;		
 		StateManager();
@@ -42,7 +45,7 @@ class StateManager
 		ref_ptr<osgViewer::Viewer> menuViewer;
 		
 		//game items
-		ref_ptr<Node> gameNode;
+		ref_ptr<Group> gameNode;
 		ref_ptr<Camera> gameCam;
 		//these are the root and view the main menu was attached to
 		ref_ptr<Group> gameRoot;

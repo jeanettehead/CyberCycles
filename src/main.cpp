@@ -27,6 +27,12 @@ int main()
 	viewer->realize(); //makes it so the viewer works
 	while(!viewer->done())
 	{
+		if(sm->transFromMenuToGame == true)
+		{
+			sm->exitMenu();
+			sm->enterGame();
+			sm->transFromMenuToGame = false;
+		}
 		viewer->frame();
 		viewer->requestRedraw();
 	}

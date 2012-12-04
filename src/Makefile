@@ -1,4 +1,4 @@
-CSRCS=main.cpp StateManager.cpp MainMenuKeyboardHandler.cpp mainmenu.cpp GameKeyboardHandler.cpp game.cpp
+CSRCS=game.cpp CCMap.cpp ControlledCycle.cpp MainMenuKeyboardHandler.cpp mainmenu.cpp GameKeyboardHandler.cpp StateManager.cpp main.cpp
 
 OUTDIR=../bin/
 

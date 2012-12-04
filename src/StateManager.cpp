@@ -15,6 +15,7 @@ using namespace osg;
 StateManager::StateManager()
 {
 	currentState = MENU;
+	transFromMenuToGame = false;
 }
 
 void StateManager::removeAllEventHandlers()
@@ -89,9 +90,13 @@ void StateManager::enterGame(osg::ref_ptr<osg::Group> root, ref_ptr<osgViewer::V
 	gameRoot = root;
 	gameViewer = viewer;
 	
-	//need to actually create game node
+	//game node
+	CCGame* gameObj = new CCGame();
+	gameNode = gameObj->getGameNode();
+	root->addChild(gameNode);
+	cout << "after game stuff added" << endl;
 	
-	//need to add keyboard listener
+	//keyboard listener
 	GameKeyboardHandler* gkb = new GameKeyboardHandler(this);
 	viewer->addEventHandler(gkb);
 	
@@ -108,8 +113,8 @@ void StateManager::enterGame(osg::ref_ptr<osg::Group> root, ref_ptr<osgViewer::V
  	// set dimensions of the view volume
 	cam->setProjectionMatrixAsPerspective(30, 4.0 / 3.0, 0.1, 100);
 	cam->setViewMatrixAsLookAt(
-		osg::Vec3(-7.5, 7.5, 0),// location
-		osg::Vec3(0, 0, 0),	// gaze at
+		osg::Vec3(0, 7.5, -7.5),// location
+		gameObj->getPlayer()->getPosition(),	// gaze at
 		osg::Vec3(0, 1, 0));	// up vector
 	//===== end camera code chunk ===== */
 }

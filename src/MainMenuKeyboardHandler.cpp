@@ -21,10 +21,10 @@ bool MainMenuKeyboardHandler::handle(const osgGA::GUIEventAdapter& ea,osgGA::GUI
 		if(ea.getKey() == 'e')
 		{
 			std::cout << "-----> It was e" << std::endl;
-			sm->exitMenu();
-			sm->enterGame();
+			sm->transFromMenuToGame = true;
+			//sm->exitMenu();
+			//sm->enterGame();
 		}
 	}
-
 	return true;
 }
