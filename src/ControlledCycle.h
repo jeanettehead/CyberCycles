@@ -3,6 +3,8 @@
 
 #include <osg/PositionAttitudeTransform>
 #include <osg/Camera>
+#include <osg/LightSource>
+#include <osg/Light>
 
 using namespace osg;
 
@@ -20,6 +22,7 @@ class ControlledCycle
 	private:
 		PositionAttitudeTransform* transformNode;
 		ref_ptr<Node> cycle;
+		ref_ptr<Light> diffuseLight;
 };
 
 #endif
