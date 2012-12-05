@@ -21,3 +21,8 @@ ControlledCycle* CCGame::getPlayer()
 {
 	return player;
 }
+
+void CCGame::setCameraOnPlayer(ref_ptr<Camera> cam)
+{
+	player->setCameraPosition(cam);
+}

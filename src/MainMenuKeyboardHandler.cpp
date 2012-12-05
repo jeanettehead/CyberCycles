@@ -22,8 +22,6 @@ bool MainMenuKeyboardHandler::handle(const osgGA::GUIEventAdapter& ea,osgGA::GUI
 		{
 			std::cout << "-----> It was e" << std::endl;
 			sm->transFromMenuToGame = true;
-			//sm->exitMenu();
-			//sm->enterGame();
 		}
 	}
 	return true;

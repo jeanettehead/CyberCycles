@@ -3,6 +3,7 @@
 
 #include "CCMap.h"
 #include "ControlledCycle.h"
+#include <osg/Camera>
 
 using namespace osg;
 class CCGame
@@ -11,6 +12,7 @@ class CCGame
 		CCGame();
 		ref_ptr<Group> getGameNode();
 		ControlledCycle* getPlayer();
+		void setCameraOnPlayer(ref_ptr<Camera> cam);
 		
 	private:
 		ref_ptr<Group> gameNode;

@@ -19,12 +19,6 @@ bool GameKeyboardHandler::handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActi
 	if(ea.getEventType() == osgGA::GUIEventAdapter::KEYDOWN)
 	{
 		std::cout << "you pressed a key in the game" << std::endl;
-		/*if(ea.getKey() == 'e')
-		{
-			std::cout << "-----> It was e" << std::endl;
-			sm->exitMenu();
-			sm->enterGame();
-		}*/
 	}
 	return true;
 }
