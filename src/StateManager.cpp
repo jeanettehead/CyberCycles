@@ -97,7 +97,7 @@ void StateManager::enterGame(osg::ref_ptr<osg::Group> root, ref_ptr<osgViewer::V
 	cout << "after game stuff added" << endl;
 	
 	//keyboard listener
-	GameKeyboardHandler* gkb = new GameKeyboardHandler(this);
+	GameKeyboardHandler* gkb = new GameKeyboardHandler(this, gameObj->getPlayer());
 	viewer->addEventHandler(gkb);
 	
 	//===== camera code chunk =====

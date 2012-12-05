@@ -7,7 +7,7 @@
 
 ControlledCycle::ControlledCycle()
 {
-	rotation = M_PI/2;
+	rotation = M_PI/2.0f;
 
 	transformNode = new PositionAttitudeTransform();
 	transformNode->setPosition(Vec3(0,0,0));

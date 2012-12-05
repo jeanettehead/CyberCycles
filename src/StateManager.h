@@ -29,6 +29,9 @@ class StateManager
 		void enterGame(ref_ptr<osg::Group> root, ref_ptr<osgViewer::Viewer> viewer);
 		void enterGame();
 		void exitGame();
+		
+		//public game items
+		ref_ptr<Camera> gameCam; //so keyboardhandler can use without getter methods
 	
 	private:
 		/* Have to use the one camera for all states for now
@@ -46,7 +49,6 @@ class StateManager
 		
 		//game items
 		ref_ptr<Group> gameNode;
-		ref_ptr<Camera> gameCam;
 		//these are the root and view the main menu was attached to
 		ref_ptr<Group> gameRoot;
 		ref_ptr<osgViewer::Viewer> gameViewer;

@@ -15,11 +15,11 @@ class ControlledCycle
 		void setCameraPosition(ref_ptr<Camera> cam);
 		void setCyclePosition(float x, float y, float z);
 		void setCyclePosition(Vec3 v);
+		double rotation;
 		
 	private:
 		PositionAttitudeTransform* transformNode;
 		ref_ptr<Node> cycle;
-		double rotation;
 };
 
 #endif
