@@ -32,13 +32,13 @@ class StateManager
 		
 		//public game items
 		ref_ptr<Camera> gameCam; //so keyboardhandler can use without getter methods
-	
-	private:
 		/* Have to use the one camera for all states for now
 		 * otherwise segmentation fault
 		 * most likely to do with threading that is handled on the osg side
 		 */
 		ref_ptr<Camera> cam;
+	
+	private:
 		
 		//main menu items
 		ref_ptr<Node> mainMenuNode;

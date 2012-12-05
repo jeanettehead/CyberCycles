@@ -19,7 +19,8 @@ class ControlledCycle
 		
 	private:
 		PositionAttitudeTransform* transformNode;
-		ref_ptr<Node> cycle;
+		ref_ptr<Group> cycle;
+		ref_ptr<Node> model;
 };
 
 #endif

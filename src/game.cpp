@@ -10,6 +10,14 @@ CCGame::CCGame()
 	
 	player = new ControlledCycle();
 	gameNode->addChild(player->getNode());
+	
+	
+	//lighting stuff
+	ref_ptr<LightSource> ls = new LightSource();
+	ref_ptr<Light> ambientLight = new Light();
+	ambientLight->setAmbient(Vec4d(1.0,1.0,1.0,1.0));
+	ls->setLight(ambientLight);
+	gameNode->addChild(ls);
 }
 
 ref_ptr<Group> CCGame::getGameNode()

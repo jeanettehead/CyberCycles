@@ -23,7 +23,7 @@ bool GameKeyboardHandler::handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActi
 		if(ea.getKey() == 'w')
 		{
 			cc->setCyclePosition(Vec3(1.0 * cos(cc->rotation), 0, 1.0 * sin(cc->rotation)) + cc->getPosition());
-			cc->setCameraPosition(sm->gameCam);
+			cc->setCameraPosition(sm->cam);
 
 		}
 	}

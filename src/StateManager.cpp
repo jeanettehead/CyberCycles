@@ -94,7 +94,6 @@ void StateManager::enterGame(osg::ref_ptr<osg::Group> root, ref_ptr<osgViewer::V
 	CCGame* gameObj = new CCGame();
 	gameNode = gameObj->getGameNode();
 	root->addChild(gameNode);
-	cout << "after game stuff added" << endl;
 	
 	//keyboard listener
 	GameKeyboardHandler* gkb = new GameKeyboardHandler(this, gameObj->getPlayer());

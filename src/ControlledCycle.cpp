@@ -7,13 +7,16 @@
 
 ControlledCycle::ControlledCycle()
 {
+	cycle = new Group();
+	
 	rotation = M_PI/2.0f;
 
 	transformNode = new PositionAttitudeTransform();
 	transformNode->setPosition(Vec3(0,0,0));
 	transformNode->setAttitude(Quat(M_PI, Vec3d(1.0,0.0,0.0), rotation,Vec3d(0.0,-1.0,0.0), 0.0, Vec3d(0.0,0.0,0.0)));
-	cycle = osgDB::readNodeFile("../assets/Light Cycle/HQ_Movie cycle.obj");
+	model = osgDB::readNodeFile("../assets/Light Cycle/HQ_Movie cycle.obj");
 	
+	cycle->addChild(model);
 	transformNode->addChild(cycle);
 }
 
@@ -29,6 +32,7 @@ Vec3 ControlledCycle::getPosition()
 
 void ControlledCycle::setCameraPosition(ref_ptr<Camera> cam)
 {
+	Vec3 location = transformNode->getPosition() + Vec3(-2.0 * cos(rotation), 2.5, -2.0 * sin(rotation));
 	cam->setViewMatrixAsLookAt(
 		transformNode->getPosition() + Vec3(-15.0 * cos(rotation), 2.5, -15.0 * sin(rotation)),
 		transformNode->getPosition() + Vec3(0, 1.5, 0),
