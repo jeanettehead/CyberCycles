@@ -107,7 +107,7 @@ void StateManager::enterGame(osg::ref_ptr<osg::Group> root, ref_ptr<osgViewer::V
 	}
 	
 	//background color
-	cam->setClearColor(osg::Vec4(255, 255, 255, 1));
+	cam->setClearColor(osg::Vec4(0, 0, 0, 1));
  	
  	// set dimensions of the view volume
 	/*cam->setProjectionMatrixAsPerspective(30, 4.0 / 3.0, 0.1, 100);
