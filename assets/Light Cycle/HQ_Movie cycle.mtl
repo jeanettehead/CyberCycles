@@ -22,7 +22,7 @@ map_kA
 map_Ns 
 
 newmtl MG_MovieCycle_Glass_MI
-Ka 0 0 0
+Ka 1 1 1
 Kd 1 1 1
 Ks 0.84 0.84 0.84
 illum 2
@@ -38,7 +38,7 @@ map_kA
 map_Ns 
 
 newmtl MG_MovieCycle_Tire_MI
-Ka 0 0 0
+Ka 1 1 1
 Kd 1 1 1
 Ks 0 0 0
 illum 2
@@ -54,7 +54,7 @@ map_kA
 map_Ns 
 
 newmtl MG_MovieCycle_Engine_MI
-Ka 0 0 0
+Ka 1 1 1
 Kd 1 1 1
 Ks 0 0 0
 illum 2
@@ -70,7 +70,7 @@ map_kA
 map_Ns 
 
 newmtl MG_MovieCycle_PlayerBody_MI
-Ka 0 0 0
+Ka 1 1 1
 Kd 1 1 1
 Ks 1 1 1
 illum 2
@@ -86,7 +86,7 @@ map_kA
 map_Ns 
 
 newmtl MG_MovieCycle_PlayerHelmet_MI
-Ka 0 0 0
+Ka 1 1 1
 Kd 1 1 1
 Ks 1 1 1
 illum 2
@@ -102,7 +102,7 @@ map_kA
 map_Ns 
 
 newmtl MG_MovieCycle_PlayerDisc_MI
-Ka 0 0 0
+Ka 1 1 1
 Kd 1 1 1
 Ks 1 1 1
 illum 2
@@ -118,7 +118,7 @@ map_kA
 map_Ns 
 
 newmtl MG_MovieCycle_PlayerBaton_MI
-Ka 0 0 0
+Ka 1 1 1
 Kd 1 1 1
 Ks 1 1 1
 illum 2
