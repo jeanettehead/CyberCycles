@@ -117,6 +117,5 @@ void StateManager::enterGame(osg::ref_ptr<osg::Group> root, ref_ptr<osgViewer::V
 		osg::Vec3(0, 1, 0));	// up vector
 	//===== end camera code chunk ===== */
 	
-	gameObj->getPlayer()->setCyclePosition(2.5f, 0.0, 2.5f);
 	gameObj->setCameraOnPlayer(cam);
 }

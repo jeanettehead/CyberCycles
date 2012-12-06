@@ -27,7 +27,9 @@ class CCMap
 		ref_ptr<StateSet> checkpointSet;
 		ref_ptr<StateSet> wallSet;
 		void loadTextures();
-				
+		ref_ptr<Vec2Array> texcoords;
+		ref_ptr<Vec3Array> normals;
+		ref_ptr<Vec4Array> colors;
 };
 
 #endif

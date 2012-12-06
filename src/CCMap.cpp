@@ -8,6 +8,17 @@ CCMap::CCMap()
 {
 	genericRoadWidth = 5.0f;
 	loadTextures();
+	
+	//stuff for textures
+	texcoords = new Vec2Array(4);
+		    	(*texcoords)[0].set(0.0f,1.0f);
+			(*texcoords)[1].set(0.0f,0.0f);
+	        	(*texcoords)[2].set(1.0f,0.0f);
+	 	        (*texcoords)[3].set(1.0f,1.0f);
+	normals = new Vec3Array(1);
+			(*normals)[0].set(0.0f,1.0f,0.0f);
+	colors = new Vec4Array(1);
+		    	(*colors)[0].set(1.0f,1.0f,1.0f,1.0f);
 }
 
 void CCMap::loadTextures()
@@ -37,37 +48,44 @@ void CCMap::loadTextures()
 	checkpointTexture->setDataVariance(Object::DYNAMIC);
 	
 	// load an image by reading a file: 
-	Image* rtImage = osgDB::readImageFile("../assets/images/tunnel/road.png");
+	ref_ptr<Image> rtImage = osgDB::readImageFile("../assets/images/tunnel/road.png");
 	if (!rtImage)
 	{
 		std::cout << " couldn't find road texture, quiting." << std::endl;
 	}
-	Image* wtImage = osgDB::readImageFile("../assets/images/tunnel/wall.png");
+	ref_ptr<Image> wtImage = osgDB::readImageFile("../assets/images/tunnel/wall.png");
 	if (!wtImage)
 	{
 		std::cout << " couldn't find wall texture, quiting." << std::endl;
 	}
-	Image* r90tImage = osgDB::readImageFile("../assets/images/tunnel/road90.png");
+	ref_ptr<Image> r90tImage = osgDB::readImageFile("../assets/images/tunnel/road90.png");
 	if (!r90tImage)
 	{
 		std::cout << " couldn't find 90 texture, quiting." << std::endl;
 	}
-	Image* stImage = osgDB::readImageFile("../assets/images/tunnel/start.png");
+	ref_ptr<Image> stImage = osgDB::readImageFile("../assets/images/tunnel/start.png");
 	if (!stImage)
 	{
 		std::cout << " couldn't find start texture, quiting." << std::endl;
 	}
-	Image* ftImage = osgDB::readImageFile("../assets/images/tunnel/finish.png");
+	ref_ptr<Image> ftImage = osgDB::readImageFile("../assets/images/tunnel/finish.png");
 	if (!ftImage)
 	{
 		std::cout << " couldn't find finish texture, quiting." << std::endl;
 	}
-	Image* ctImage = osgDB::readImageFile("../assets/images/tunnel/checkpoint.png");
+	ref_ptr<Image> ctImage = osgDB::readImageFile("../assets/images/tunnel/checkpoint.png");
 	if (!ctImage)
 	{
 		std::cout << " couldn't find checpoint texture, quiting." << std::endl;
 	}
-		
+	
+	roadTexture->setImage(rtImage);
+	wallTexture->setImage(wtImage);
+	road90Texture->setImage(r90tImage);
+	startTexture->setImage(stImage);
+	finishTexture->setImage(ftImage);
+	checkpointTexture->setImage(ctImage);
+	
 	straightRoadSet->setTextureAttributeAndModes(0,roadTexture,StateAttribute::ON);
 	road90Set->setTextureAttributeAndModes(0,road90Texture,StateAttribute::ON);
 	startSet->setTextureAttributeAndModes(0,startTexture,StateAttribute::ON);
@@ -79,6 +97,20 @@ void CCMap::loadTextures()
 void CCMap::buildBuiltInWorld()
 {
 	mapNode = new Group();
+	ref_ptr<Geode> road_node = new Geode();
+	float x;
+	for(x = 0; x < 50; x = x + genericRoadWidth)
+	{
+		float z;
+		for(z = 0; z < 5; z = z + genericRoadWidth)
+		{
+			buildStrightSection(x, 0, z, road_node);
+		}
+	}
+	road_node->setStateSet(straightRoadSet);
+	mapNode->addChild(road_node);
+	
+	/*mapNode = new Group();
 	
 	//node that the road pices are added to
 	ref_ptr<Geode> road_node = new Geode();
@@ -103,12 +135,12 @@ void CCMap::buildBuiltInWorld()
 	wallTexture->setDataVariance(Object::DYNAMIC);
 
 	// load an image by reading a file: 
-	Image* rtImage = osgDB::readImageFile("../assets/road.png");
+	Image* rtImage = osgDB::readImageFile("../assets/images/tunnel/road.png");
 	if (!rtImage)
 	{
 		std::cout << " couldn't find texture, quiting." << std::endl;
 	}
-	Image* wtImage = osgDB::readImageFile("../assets/wall.png");
+	Image* wtImage = osgDB::readImageFile("../assets/images/tunnel/wall.png");
 	if (!wtImage)
 	{
 		std::cout << " couldn't find texture, quiting." << std::endl;
@@ -130,7 +162,9 @@ void CCMap::buildBuiltInWorld()
 	wall_node->setStateSet(wallState);
 	
 	mapNode->addChild(road_node);
-	mapNode->addChild(wall_node);
+	mapNode->addChild(wall_node);*/
+	
+	
 }
 
 /* Creats a road piece at the given loacation.
@@ -172,6 +206,34 @@ void CCMap::buildRoadSection(float x, float y, float z, ref_ptr<Geode> road, ref
 
 void CCMap::buildStrightSection(float x, float y, float z, ref_ptr<Geode> g)
 {
+	//ref_ptr<PositionAttitudeTransform> transformNode = new PositionAttitudeTransfor();
+	
+	ref_ptr<Geometry> myPlane (new Geometry());
+	
+	float modifier = genericRoadWidth/2.0f;
+	
+	//verticies for the road piece
+	ref_ptr<Vec3Array> roadVert = new Vec3Array;
+	roadVert->push_back( Vec3( x - modifier, y, z + modifier) );
+	roadVert->push_back( Vec3( x + modifier, y, z + modifier) );
+	roadVert->push_back( Vec3( x + modifier, y, z - modifier) );
+	roadVert->push_back( Vec3( x - modifier, y, z - modifier) );
+	roadVert->push_back( Vec3( x - modifier, y, z + modifier) );
+	
+	cout << x-modifier << ", " << z + modifier << endl;
+	cout << x+modifier << ", " << z + modifier << endl;
+	cout << x+modifier << ", " << z - modifier << endl;
+	cout << x-modifier << ", " << z - modifier << endl;
+	
+	myPlane->setVertexArray(roadVert);
+	myPlane->setTexCoordArray(0,texcoords);
+        myPlane->setNormalArray(normals);
+    	myPlane->setNormalBinding(Geometry::BIND_OVERALL);
+    	myPlane->setColorArray(colors);
+	myPlane->setColorBinding(Geometry::BIND_OVERALL);	
+	myPlane->addPrimitiveSet(new DrawArrays(GL_QUADS,0,4)); //I am not sure what this actuall does
+	
+	g->addDrawable(myPlane);
 }
 
 ref_ptr<Group> CCMap::getMapNode()

@@ -18,7 +18,7 @@ class ControlledCycle
 		double rotation;
 		
 	private:
-		PositionAttitudeTransform* transformNode;
+		ref_ptr<PositionAttitudeTransform> transformNode;
 		ref_ptr<Group> cycle;
 		ref_ptr<Node> model;
 };
