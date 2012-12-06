@@ -14,7 +14,7 @@ ControlledCycle::ControlledCycle()
 	transformNode = new PositionAttitudeTransform();
 	transformNode->setPosition(Vec3(0,0,0));
 	transformNode->setAttitude(Quat(M_PI, Vec3d(1.0,0.0,0.0), rotation,Vec3d(0.0,-1.0,0.0), 0.0, Vec3d(0.0,0.0,0.0)));
-	model = osgDB::readNodeFile("../assets/Light Cycle/HQ_Movie cycle.obj");
+	model = osgDB::readNodeFile("../assets/Light Cycle/cycle.obj");
 	
 	cycle->addChild(model);
 	transformNode->addChild(cycle);

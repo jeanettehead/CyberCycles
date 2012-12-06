@@ -17,8 +17,17 @@ class CCMap
 		
 	private:
 		ref_ptr<Group> mapNode;
-		ref_ptr<Geometry> buildRoadPiece(float x, float y, float z);
-		
+		void buildRoadSection(float x, float y, float z, ref_ptr<Geode> road, ref_ptr<Geode> wall);
+		void buildStrightSection(float x, float y, float z, ref_ptr<Geode> g);
+		//these are for the textures
+		ref_ptr<StateSet> straightRoadSet;
+		ref_ptr<StateSet> road90Set;
+		ref_ptr<StateSet> startSet;
+		ref_ptr<StateSet> finishSet;
+		ref_ptr<StateSet> checkpointSet;
+		ref_ptr<StateSet> wallSet;
+		void loadTextures();
+				
 };
 
 #endif
