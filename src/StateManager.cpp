@@ -8,6 +8,22 @@
 #include <osgViewer/View>
 #include <iostream>
 #include <list>
+#include <osg/PositionAttitudeTransform>
+#include <osg/Group>
+#include <osg/Node>
+#include <osgDB/ReadFile> 
+#include <osgViewer/Viewer>
+
+#include <osgText/Font>
+#include <osgText/Text>
+#include <osg/MatrixTransform>
+#include <osg/Geode>
+#include <osg/Projection>
+#include <osg/ShapeDrawable>
+#include <osg/Geometry>
+#include <osgGA/TrackballManipulator>
+
+
 
 using namespace std;
 using namespace osg;
@@ -23,15 +39,15 @@ void StateManager::removeAllEventHandlers()
 	(menuViewer->getEventHandlers()).clear();
 }
 
-void StateManager::enterMenu(osg::ref_ptr<osg::Group> root, ref_ptr<osgViewer::Viewer> viewer)
+void StateManager::enterMenu(ref_ptr<Group> root, ref_ptr<osgViewer::Viewer> viewer)
 {
 	menuRoot = root;
 	menuViewer = viewer;
 	
 	//makes menu adds it to the graph
 	MainMenu* mm = new MainMenu();
-	mainMenuNode = mm->getMenuNode();
-	root->addChild(mainMenuNode);
+	//mainMenuNode = mm->getMenuNode();
+	//root->addChild(mainMenuNode);
 	
 	//adds the keyboard listener to the graph
 	MainMenuKeyboardHandler* mmkb = new MainMenuKeyboardHandler(this);
@@ -43,23 +59,37 @@ void StateManager::enterMenu(osg::ref_ptr<osg::Group> root, ref_ptr<osgViewer::V
 		cam = new Camera;
 		viewer->setCamera(cam);
 	}
-	
-	//background color
-	cam->setClearColor(osg::Vec4(0, 0, 255, 1));
- 	
- 	// set dimensions of the view volume
-	cam->setProjectionMatrixAsPerspective(45, 16.0 / 9.0, 0.1, 100);
-	cam->setViewMatrixAsLookAt(
-		osg::Vec3(-7.5, 7.5, 0),// location
-		osg::Vec3(0, 0, 0),	// gaze at
-		osg::Vec3(0, 1, 0));	// up vector
-	
-	//===== end camera code chunk
+
+    //set up matrix stuff for main menu
+
+       // Projection node for defining view frustrum for menu:
+        menuProjectionMatrix = new  Projection;
+
+	// Initialize the projection matrix for viewing everything we
+       // will add as descendants of this node.  Positions described 
+        //under this node will equate to pixel coordinates.
+       menuProjectionMatrix->setMatrix(Matrix::ortho2D(0,1024,0,768));
+        // For the menu model view matrix use an identity matrix:
+        MatrixTransform* menuModelViewMatrix = new  MatrixTransform;
+       menuModelViewMatrix->setMatrix(Matrix::identity());
+       // Make sure the model view matrix is not affected by any transforms
+       // above it in the scene graph:
+       menuModelViewMatrix->setReferenceFrame(Transform::ABSOLUTE_RF);
+       // Add the menu projection matrix as a child of the root node
+       // Anything under this node will be viewed in 2d
+       root->addChild(menuProjectionMatrix);
+       menuProjectionMatrix->addChild(menuModelViewMatrix);
+
+    // Add the Geometry node to contain menu geometry as a child of the
+       // menu model view matrix.
+       mainMenuNode = mm->getMenuNode();
+       menuModelViewMatrix->addChild(mainMenuNode);
+   
 }
 
 void StateManager::exitMenu()
 {
-	menuRoot->removeChild(mainMenuNode);
+	menuRoot->removeChild(menuProjectionMatrix);
 	removeAllEventHandlers();
 }
 
