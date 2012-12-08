@@ -313,6 +313,8 @@ void CCMap::build90Section(float x, float y, float z, float rotation, ref_ptr<Gr
 	ref_ptr<Geometry> wallGeoLeftTop = new Geometry();
 	ref_ptr<Geometry> wallGeoRightTop = new Geometry();
 	ref_ptr<Geometry> roofGeo = new Geometry();
+	ref_ptr<Geometry> wallCornGeo = new Geometry();
+	ref_ptr<Geometry> wallCornTopGeo = new Geometry();
 	
 	ref_ptr<Geode> road_node = new Geode();
 	ref_ptr<Geode> wall_node = new Geode();
@@ -419,6 +421,36 @@ void CCMap::build90Section(float x, float y, float z, float rotation, ref_ptr<Gr
 	wallGeoRightTop->setColorBinding(Geometry::BIND_OVERALL);	
 	wallGeoRightTop->addPrimitiveSet(new DrawArrays(GL_QUADS,0,4)); //I am not sure what this actuall does
 	
+	//verticies for the wall corrner bottom
+	ref_ptr<Vec3Array> wall5Vert = new Vec3Array();
+	wall5Vert->push_back( Vec3( 0 + modifier, 0, 0 - modifier) );
+	wall5Vert->push_back( Vec3( 0 + modifier, half, 0 - modifier - out) );
+	wall5Vert->push_back( Vec3( 0 + modifier + out, half, 0 - modifier) );
+	wall5Vert->push_back( Vec3( 0 + modifier, 0, 0 - modifier) );
+	
+	wallCornGeo->setVertexArray(wall5Vert);
+	wallCornGeo->setTexCoordArray(0,texcoords);
+        wallCornGeo->setNormalArray(normals);
+    	wallCornGeo->setNormalBinding(Geometry::BIND_OVERALL);
+    	wallCornGeo->setColorArray(colors);
+	wallCornGeo->setColorBinding(Geometry::BIND_OVERALL);	
+	wallCornGeo->addPrimitiveSet(new DrawArrays(GL_QUADS,0,4)); //I am not sure what this actuall does
+	
+	//verticies for the wall corrner top
+	ref_ptr<Vec3Array> wall6Vert = new Vec3Array();
+	wall6Vert->push_back( Vec3( 0 + modifier, height, 0 - modifier) );	
+	wall6Vert->push_back( Vec3( 0 + modifier + out, half, 0 - modifier) );	
+	wall6Vert->push_back( Vec3( 0 + modifier, half, 0 - modifier - out) );
+	wall6Vert->push_back( Vec3( 0 + modifier, height, 0 - modifier) );
+		
+	wallCornTopGeo->setVertexArray(wall6Vert);
+	wallCornTopGeo->setTexCoordArray(0,texcoords);
+        wallCornTopGeo->setNormalArray(normals);
+    	wallCornTopGeo->setNormalBinding(Geometry::BIND_OVERALL);
+    	wallCornTopGeo->setColorArray(colors);
+	wallCornTopGeo->setColorBinding(Geometry::BIND_OVERALL);	
+	wallCornTopGeo->addPrimitiveSet(new DrawArrays(GL_QUADS,0,4)); //I am not sure what this actuall does
+	
 	//set textures
 	road_node->setStateSet(road90Set);
 	roof_node->setStateSet(roofSet);
@@ -431,6 +463,8 @@ void CCMap::build90Section(float x, float y, float z, float rotation, ref_ptr<Gr
 	wall_node->addDrawable(wallGeoRight);
 	wall_node->addDrawable(wallGeoLeftTop);
 	wall_node->addDrawable(wallGeoRightTop);
+	wall_node->addDrawable(wallCornGeo);
+	wall_node->addDrawable(wallCornTopGeo);
 	
 	//add the nodes to the transformNode
 	transformNode->addChild(road_node);
