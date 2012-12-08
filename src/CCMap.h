@@ -21,6 +21,8 @@ class CCMap
 		void buildStrightSection(float x, float y, float z, float rotation, ref_ptr<Group> g);
 		void build90Section(float x, float y, float z, float rotation, ref_ptr<Group> g);
 		void buildCheckpointSection(float x, float y, float z, float rotation, ref_ptr<Group> g);
+		void buildStartSection(float x, float y, float z, float rotation, ref_ptr<Group> g);
+		void buildFinishSection(float x, float y, float z, float rotation, ref_ptr<Group> g);
 		//these are for the textures
 		ref_ptr<StateSet> straightRoadSet;
 		ref_ptr<StateSet> road90Set;
