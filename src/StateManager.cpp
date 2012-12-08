@@ -63,7 +63,7 @@ void StateManager::enterMenu(ref_ptr<Group> root, ref_ptr<osgViewer::Viewer> vie
     //set up matrix stuff for main menu
 
        // Projection node for defining view frustrum for menu:
-        Projection* menuProjectionMatrix = new  Projection;
+        menuProjectionMatrix = new  Projection;
 
 	// Initialize the projection matrix for viewing everything we
        // will add as descendants of this node.  Positions described 
@@ -82,13 +82,14 @@ void StateManager::enterMenu(ref_ptr<Group> root, ref_ptr<osgViewer::Viewer> vie
 
     // Add the Geometry node to contain menu geometry as a child of the
        // menu model view matrix.
-       menuModelViewMatrix->addChild(mm->getMenuNode());
+       mainMenuNode = mm->getMenuNode();
+       menuModelViewMatrix->addChild(mainMenuNode);
    
 }
 
 void StateManager::exitMenu()
 {
-	menuRoot->removeChild(mainMenuNode);
+	menuRoot->removeChild(menuProjectionMatrix);
 	removeAllEventHandlers();
 }
 

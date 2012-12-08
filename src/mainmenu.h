@@ -19,11 +19,15 @@
 using namespace osg;
 class MainMenu
 {
-	ref_ptr<Group> menu_node;
-	
+//	const int mapSelected = 0;
+ //   const int playSelected = 1;
 	public:	
 		MainMenu();
 		ref_ptr<Node> getMenuNode();
+    private:
+        int numMaps;
+        unsigned int selection;
+        
 };
 
 #endif

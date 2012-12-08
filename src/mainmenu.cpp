@@ -1,7 +1,9 @@
 #include "mainmenu.h"
 
+
 MainMenu::MainMenu()
 {
+    numMaps = 1;
 
 }
 
@@ -14,6 +16,7 @@ ref_ptr<Node> MainMenu::getMenuNode(){
 
        // Set up geometry for the menu and add it to the menu
         ref_ptr<Geometry> menuBackgroundGeometry = new  Geometry();
+        ref_ptr<Geometry> selector = new Geometry();
 
         //sets verticies of the menu
         ref_ptr<Vec3Array> menuBackgroundVertices = new  Vec3Array;
@@ -39,6 +42,10 @@ ref_ptr<Node> MainMenu::getMenuNode(){
        (*texcoords)[3].set(0.0f,1.0f);
 
        menuBackgroundGeometry->setTexCoordArray(0,texcoords);
+        selector->setTexCoordArray(0,texcoords);
+        ref_ptr<Texture2D> selectTexture = new  Texture2D;
+       selectTexture->setDataVariance(Object::DYNAMIC);
+
         ref_ptr<Texture2D> menuTexture = new  Texture2D;
        menuTexture->setDataVariance(Object::DYNAMIC);
         ref_ptr<Image> menuImage;
@@ -52,9 +59,10 @@ ref_ptr<Node> MainMenu::getMenuNode(){
        menuBackgroundGeometry->setVertexArray(menuBackgroundVertices);
        menuBackgroundGeometry->setColorArray(menucolors);
        menuBackgroundGeometry->setColorBinding(Geometry::BIND_OVERALL);
+        // selector->
 
        menuGeode->addDrawable(menuBackgroundGeometry);
-
+        menuGeode->addDrawable(selector);
   // Create and set up a state set using the texture from above:
         ref_ptr<StateSet> menuStateSet = new  StateSet();
        menuGeode->setStateSet(menuStateSet);
@@ -80,7 +88,14 @@ ref_ptr<Node> MainMenu::getMenuNode(){
        textOne->setAxisAlignment(osgText::Text::SCREEN);
        textOne->setPosition( Vec3(330,340,-1) );
        textOne->setColor( Vec4(0, 0, 0, 1) );
-
+       ref_ptr<osgText::Text> instructionText = new osgText::Text();
+        instructionText->setCharacterSize(15);
+       //textOne->setFont("C:/WINDOWS/Fonts/impact.ttf");
+       instructionText->setText("Press 'e' To Play");
+       instructionText->setAxisAlignment(osgText::Text::SCREEN);
+       instructionText->setPosition( Vec3(310,110,-1) );
+       instructionText->setColor( Vec4(0, 0, 0, 1) );
+       menuGeode->addDrawable(instructionText );
 	// Add the goede to the scene:
 	return menuGeode;
 

@@ -42,6 +42,7 @@ class StateManager
 		
 		//main menu items
 		ref_ptr<Node> mainMenuNode;
+        ref_ptr<Projection> menuProjectionMatrix;
 		ref_ptr<Camera> mainMenuCam;
 		//these are the root and view the main menu was attached to
 		ref_ptr<Group> menuRoot;
