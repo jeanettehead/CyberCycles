@@ -114,7 +114,8 @@ void CCMap::buildBuiltInWorld()
 	
 	float x;
 	float z;
-	for(x = -50; x < 50; x = x + genericRoadWidth)
+	buildStartSection(0, 0, 0, 0, mapNode);
+	for(x = 5; x < 50; x = x + genericRoadWidth)
 	{
 		for(z = 0; z < 5; z = z + genericRoadWidth)
 		{
@@ -122,7 +123,7 @@ void CCMap::buildBuiltInWorld()
 		}
 	}
 	buildCheckpointSection(50, 0, 0, 0, mapNode);
-	build90Section(55, 0, 0, 0, mapNode);
+	buildFinishSection(55, 0, 0, 0, mapNode);
 }
 
 /* Creats a road piece at the given loacation.
@@ -534,11 +535,11 @@ void CCMap::buildCheckpointSection(float x, float y, float z, float rotation, re
 	float half = genericRoadWidth * cos(M_PI/6.0f);
 	float out = genericRoadWidth * sin(M_PI/6.0f);
 	ref_ptr<Vec3Array> wall1Vert = new Vec3Array();
+	wall1Vert->push_back( Vec3( 0 + modifier, 0, 0 - modifier) );	
 	wall1Vert->push_back( Vec3( 0 - modifier , 0, 0 - modifier) );
 	wall1Vert->push_back( Vec3( 0 - modifier, 0 + half, 0 - modifier - out) );
 	wall1Vert->push_back( Vec3( 0 + modifier, 0 + half, 0 - modifier - out) );
 	wall1Vert->push_back( Vec3( 0 + modifier, 0, 0 - modifier) );
-	wall1Vert->push_back( Vec3( 0 - modifier , 0, 0 - modifier) );
 	
 	wallGeoLeft->setVertexArray(wall1Vert);
 	wallGeoLeft->setTexCoordArray(0,texcoords);
@@ -550,11 +551,11 @@ void CCMap::buildCheckpointSection(float x, float y, float z, float rotation, re
 	
 	//verticies for the wall bottom right
 	ref_ptr<Vec3Array> wall2Vert = new Vec3Array();
+	wall2Vert->push_back( Vec3( 0 + modifier, 0, 0 + modifier) );	
 	wall2Vert->push_back( Vec3( 0 - modifier , 0, 0 + modifier) );
 	wall2Vert->push_back( Vec3( 0 - modifier, 0 + half, 0 + modifier + out) );
 	wall2Vert->push_back( Vec3( 0 + modifier, 0 + half, 0 + modifier + out) );
 	wall2Vert->push_back( Vec3( 0 + modifier, 0, 0 + modifier) );
-	wall2Vert->push_back( Vec3( 0 - modifier , 0, 0 + modifier) );
 	
 	wallGeoRight->setVertexArray(wall2Vert);
 	wallGeoRight->setTexCoordArray(0,texcoords);
@@ -566,11 +567,11 @@ void CCMap::buildCheckpointSection(float x, float y, float z, float rotation, re
 	
 	//verticies for the wall top left
 	ref_ptr<Vec3Array> wall3Vert = new Vec3Array();
+	wall3Vert->push_back( Vec3( 0 + modifier, 0 + half, 0 - modifier - out) );	
 	wall3Vert->push_back( Vec3( 0 - modifier, 0 + half, 0 - modifier - out) );
 	wall3Vert->push_back( Vec3( 0 - modifier , height, 0 - modifier) );
 	wall3Vert->push_back( Vec3( 0 + modifier, height, 0 - modifier) );
 	wall3Vert->push_back( Vec3( 0 + modifier, 0 + half, 0 - modifier - out) );
-	wall3Vert->push_back( Vec3( 0 - modifier, 0 + half, 0 - modifier - out) );
 	
 	wallGeoLeftTop->setVertexArray(wall3Vert);
 	wallGeoLeftTop->setTexCoordArray(0,texcoords);
@@ -582,11 +583,11 @@ void CCMap::buildCheckpointSection(float x, float y, float z, float rotation, re
 	
 	//verticies for the wall top right
 	ref_ptr<Vec3Array> wall4Vert = new Vec3Array();
+	wall4Vert->push_back( Vec3( 0 + modifier, 0 + half, 0 + modifier + out) );	
 	wall4Vert->push_back( Vec3( 0 - modifier, 0 + half, 0 + modifier + out) );
 	wall4Vert->push_back( Vec3( 0 - modifier , height, 0 + modifier) );
 	wall4Vert->push_back( Vec3( 0 + modifier, height, 0 + modifier) );
 	wall4Vert->push_back( Vec3( 0 + modifier, 0 + half, 0 + modifier + out) );
-	wall4Vert->push_back( Vec3( 0 - modifier, 0 + half, 0 + modifier + out) );
 	
 	wallGeoRightTop->setVertexArray(wall4Vert);
 	wallGeoRightTop->setTexCoordArray(0,texcoords);
@@ -600,6 +601,290 @@ void CCMap::buildCheckpointSection(float x, float y, float z, float rotation, re
 	road_node->setStateSet(checkpointSet);
 	roof_node->setStateSet(checkpointSet);
 	wall_node->setStateSet(checkpointSet);
+	
+	//add geometry to respective nodes
+	road_node->addDrawable(roadGeo);
+	roof_node->addDrawable(roofGeo);
+	wall_node->addDrawable(wallGeoLeft);
+	wall_node->addDrawable(wallGeoRight);
+	wall_node->addDrawable(wallGeoLeftTop);
+	wall_node->addDrawable(wallGeoRightTop);
+	
+	//add the nodes to the transformNode
+	transformNode->addChild(road_node);
+	transformNode->addChild(roof_node);
+	transformNode->addChild(wall_node);
+	
+	//move the transform node
+	transformNode->setPosition(Vec3(x, y, z));
+	transformNode->setAttitude(Quat(0.0, Vec3d(1.0,0.0,0.0), rotation,Vec3d(0.0,1.0,0.0), 0.0, Vec3d(0.0,0.0,1.0)));
+	
+	//add the transform node to g
+	g->addChild(transformNode);
+}
+
+void CCMap::buildStartSection(float x, float y, float z, float rotation, ref_ptr<Group> g)
+{
+	ref_ptr<PositionAttitudeTransform> transformNode = new PositionAttitudeTransform();
+	
+	ref_ptr<Geometry> roadGeo = new Geometry();
+	ref_ptr<Geometry> wallGeoLeft = new Geometry();
+	ref_ptr<Geometry> wallGeoRight = new Geometry();
+	ref_ptr<Geometry> wallGeoLeftTop = new Geometry();
+	ref_ptr<Geometry> wallGeoRightTop = new Geometry();
+	ref_ptr<Geometry> roofGeo = new Geometry();
+	
+	ref_ptr<Geode> road_node = new Geode();
+	ref_ptr<Geode> wall_node = new Geode();
+	ref_ptr<Geode> roof_node = new Geode();
+	
+	float modifier = genericRoadWidth/2.0f;
+	
+	//verticies for the road piece
+	ref_ptr<Vec3Array> roadVert = new Vec3Array;
+	roadVert->push_back( Vec3( 0 - modifier, 0, 0 + modifier) );
+	roadVert->push_back( Vec3( 0 + modifier, 0, 0 + modifier) );
+	roadVert->push_back( Vec3( 0 + modifier, 0, 0 - modifier) );
+	roadVert->push_back( Vec3( 0 - modifier, 0, 0 - modifier) );
+	roadVert->push_back( Vec3( 0 - modifier, 0, 0 + modifier) );
+	
+	roadGeo->setVertexArray(roadVert);
+	roadGeo->setTexCoordArray(0,texcoords);
+        roadGeo->setNormalArray(normals);
+    	roadGeo->setNormalBinding(Geometry::BIND_OVERALL);
+    	roadGeo->setColorArray(colors);
+	roadGeo->setColorBinding(Geometry::BIND_OVERALL);	
+	roadGeo->addPrimitiveSet(new DrawArrays(GL_QUADS,0,4)); //I am not sure what this actuall does
+	
+	//verticies for the roof
+	float height = 2.0f * genericRoadWidth * cos(M_PI/6.0f);
+	ref_ptr<Vec3Array> roofVert = new Vec3Array();
+	roofVert->push_back( Vec3( 0 - modifier, 0 + height, 0 + modifier) );
+	roofVert->push_back( Vec3( 0 + modifier, 0 + height, 0 + modifier) );
+	roofVert->push_back( Vec3( 0 + modifier, 0 + height, 0 - modifier) );
+	roofVert->push_back( Vec3( 0 - modifier, 0 + height, 0 - modifier) );
+	roofVert->push_back( Vec3( 0 - modifier, 0 + height, 0 + modifier) );
+	
+	roofGeo->setVertexArray(roofVert);
+	roofGeo->setTexCoordArray(0,texcoords);
+        roofGeo->setNormalArray(normals);
+    	roofGeo->setNormalBinding(Geometry::BIND_OVERALL);
+    	roofGeo->setColorArray(colors);
+	roofGeo->setColorBinding(Geometry::BIND_OVERALL);	
+	roofGeo->addPrimitiveSet(new DrawArrays(GL_QUADS,0,4)); //I am not sure what this actuall does
+	
+	//verticies for the wall bottom left
+	float half = genericRoadWidth * cos(M_PI/6.0f);
+	float out = genericRoadWidth * sin(M_PI/6.0f);
+	ref_ptr<Vec3Array> wall1Vert = new Vec3Array();
+	wall1Vert->push_back( Vec3( 0 + modifier, 0, 0 - modifier) );	
+	wall1Vert->push_back( Vec3( 0 - modifier , 0, 0 - modifier) );
+	wall1Vert->push_back( Vec3( 0 - modifier, 0 + half, 0 - modifier - out) );
+	wall1Vert->push_back( Vec3( 0 + modifier, 0 + half, 0 - modifier - out) );
+	wall1Vert->push_back( Vec3( 0 + modifier, 0, 0 - modifier) );
+	
+	wallGeoLeft->setVertexArray(wall1Vert);
+	wallGeoLeft->setTexCoordArray(0,texcoords);
+        wallGeoLeft->setNormalArray(normals);
+    	wallGeoLeft->setNormalBinding(Geometry::BIND_OVERALL);
+    	wallGeoLeft->setColorArray(colors);
+	wallGeoLeft->setColorBinding(Geometry::BIND_OVERALL);	
+	wallGeoLeft->addPrimitiveSet(new DrawArrays(GL_QUADS,0,4)); //I am not sure what this actuall does
+	
+	//verticies for the wall bottom right
+	ref_ptr<Vec3Array> wall2Vert = new Vec3Array();
+	wall2Vert->push_back( Vec3( 0 + modifier, 0, 0 + modifier) );	
+	wall2Vert->push_back( Vec3( 0 - modifier , 0, 0 + modifier) );
+	wall2Vert->push_back( Vec3( 0 - modifier, 0 + half, 0 + modifier + out) );
+	wall2Vert->push_back( Vec3( 0 + modifier, 0 + half, 0 + modifier + out) );
+	wall2Vert->push_back( Vec3( 0 + modifier, 0, 0 + modifier) );
+	
+	wallGeoRight->setVertexArray(wall2Vert);
+	wallGeoRight->setTexCoordArray(0,texcoords);
+        wallGeoRight->setNormalArray(normals);
+    	wallGeoRight->setNormalBinding(Geometry::BIND_OVERALL);
+    	wallGeoRight->setColorArray(colors);
+	wallGeoRight->setColorBinding(Geometry::BIND_OVERALL);	
+	wallGeoRight->addPrimitiveSet(new DrawArrays(GL_QUADS,0,4)); //I am not sure what this actuall does
+	
+	//verticies for the wall top left
+	ref_ptr<Vec3Array> wall3Vert = new Vec3Array();
+	wall3Vert->push_back( Vec3( 0 + modifier, 0 + half, 0 - modifier - out) );	
+	wall3Vert->push_back( Vec3( 0 - modifier, 0 + half, 0 - modifier - out) );
+	wall3Vert->push_back( Vec3( 0 - modifier , height, 0 - modifier) );
+	wall3Vert->push_back( Vec3( 0 + modifier, height, 0 - modifier) );
+	wall3Vert->push_back( Vec3( 0 + modifier, 0 + half, 0 - modifier - out) );
+	
+	wallGeoLeftTop->setVertexArray(wall3Vert);
+	wallGeoLeftTop->setTexCoordArray(0,texcoords);
+        wallGeoLeftTop->setNormalArray(normals);
+    	wallGeoLeftTop->setNormalBinding(Geometry::BIND_OVERALL);
+    	wallGeoLeftTop->setColorArray(colors);
+	wallGeoLeftTop->setColorBinding(Geometry::BIND_OVERALL);	
+	wallGeoLeftTop->addPrimitiveSet(new DrawArrays(GL_QUADS,0,4)); //I am not sure what this actuall does
+	
+	//verticies for the wall top right
+	ref_ptr<Vec3Array> wall4Vert = new Vec3Array();
+	wall4Vert->push_back( Vec3( 0 + modifier, 0 + half, 0 + modifier + out) );	
+	wall4Vert->push_back( Vec3( 0 - modifier, 0 + half, 0 + modifier + out) );
+	wall4Vert->push_back( Vec3( 0 - modifier , height, 0 + modifier) );
+	wall4Vert->push_back( Vec3( 0 + modifier, height, 0 + modifier) );
+	wall4Vert->push_back( Vec3( 0 + modifier, 0 + half, 0 + modifier + out) );
+	
+	wallGeoRightTop->setVertexArray(wall4Vert);
+	wallGeoRightTop->setTexCoordArray(0,texcoords);
+        wallGeoRightTop->setNormalArray(normals);
+    	wallGeoRightTop->setNormalBinding(Geometry::BIND_OVERALL);
+    	wallGeoRightTop->setColorArray(colors);
+	wallGeoRightTop->setColorBinding(Geometry::BIND_OVERALL);	
+	wallGeoRightTop->addPrimitiveSet(new DrawArrays(GL_QUADS,0,4)); //I am not sure what this actuall does
+	
+	//set textures
+	road_node->setStateSet(startSet);
+	roof_node->setStateSet(startSet);
+	wall_node->setStateSet(startSet);
+	
+	//add geometry to respective nodes
+	road_node->addDrawable(roadGeo);
+	roof_node->addDrawable(roofGeo);
+	wall_node->addDrawable(wallGeoLeft);
+	wall_node->addDrawable(wallGeoRight);
+	wall_node->addDrawable(wallGeoLeftTop);
+	wall_node->addDrawable(wallGeoRightTop);
+	
+	//add the nodes to the transformNode
+	transformNode->addChild(road_node);
+	transformNode->addChild(roof_node);
+	transformNode->addChild(wall_node);
+	
+	//move the transform node
+	transformNode->setPosition(Vec3(x, y, z));
+	transformNode->setAttitude(Quat(0.0, Vec3d(1.0,0.0,0.0), rotation,Vec3d(0.0,1.0,0.0), 0.0, Vec3d(0.0,0.0,1.0)));
+	
+	//add the transform node to g
+	g->addChild(transformNode);
+}
+
+void CCMap::buildFinishSection(float x, float y, float z, float rotation, ref_ptr<Group> g)
+{
+	ref_ptr<PositionAttitudeTransform> transformNode = new PositionAttitudeTransform();
+	
+	ref_ptr<Geometry> roadGeo = new Geometry();
+	ref_ptr<Geometry> wallGeoLeft = new Geometry();
+	ref_ptr<Geometry> wallGeoRight = new Geometry();
+	ref_ptr<Geometry> wallGeoLeftTop = new Geometry();
+	ref_ptr<Geometry> wallGeoRightTop = new Geometry();
+	ref_ptr<Geometry> roofGeo = new Geometry();
+	
+	ref_ptr<Geode> road_node = new Geode();
+	ref_ptr<Geode> wall_node = new Geode();
+	ref_ptr<Geode> roof_node = new Geode();
+	
+	float modifier = genericRoadWidth/2.0f;
+	
+	//verticies for the road piece
+	ref_ptr<Vec3Array> roadVert = new Vec3Array;
+	roadVert->push_back( Vec3( 0 - modifier, 0, 0 + modifier) );
+	roadVert->push_back( Vec3( 0 + modifier, 0, 0 + modifier) );
+	roadVert->push_back( Vec3( 0 + modifier, 0, 0 - modifier) );
+	roadVert->push_back( Vec3( 0 - modifier, 0, 0 - modifier) );
+	roadVert->push_back( Vec3( 0 - modifier, 0, 0 + modifier) );
+	
+	roadGeo->setVertexArray(roadVert);
+	roadGeo->setTexCoordArray(0,texcoords);
+        roadGeo->setNormalArray(normals);
+    	roadGeo->setNormalBinding(Geometry::BIND_OVERALL);
+    	roadGeo->setColorArray(colors);
+	roadGeo->setColorBinding(Geometry::BIND_OVERALL);	
+	roadGeo->addPrimitiveSet(new DrawArrays(GL_QUADS,0,4)); //I am not sure what this actuall does
+	
+	//verticies for the roof
+	float height = 2.0f * genericRoadWidth * cos(M_PI/6.0f);
+	ref_ptr<Vec3Array> roofVert = new Vec3Array();
+	roofVert->push_back( Vec3( 0 - modifier, 0 + height, 0 + modifier) );
+	roofVert->push_back( Vec3( 0 + modifier, 0 + height, 0 + modifier) );
+	roofVert->push_back( Vec3( 0 + modifier, 0 + height, 0 - modifier) );
+	roofVert->push_back( Vec3( 0 - modifier, 0 + height, 0 - modifier) );
+	roofVert->push_back( Vec3( 0 - modifier, 0 + height, 0 + modifier) );
+	
+	roofGeo->setVertexArray(roofVert);
+	roofGeo->setTexCoordArray(0,texcoords);
+        roofGeo->setNormalArray(normals);
+    	roofGeo->setNormalBinding(Geometry::BIND_OVERALL);
+    	roofGeo->setColorArray(colors);
+	roofGeo->setColorBinding(Geometry::BIND_OVERALL);	
+	roofGeo->addPrimitiveSet(new DrawArrays(GL_QUADS,0,4)); //I am not sure what this actuall does
+	
+	//verticies for the wall bottom left
+	float half = genericRoadWidth * cos(M_PI/6.0f);
+	float out = genericRoadWidth * sin(M_PI/6.0f);
+	ref_ptr<Vec3Array> wall1Vert = new Vec3Array();
+	wall1Vert->push_back( Vec3( 0 + modifier, 0, 0 - modifier) );	
+	wall1Vert->push_back( Vec3( 0 - modifier , 0, 0 - modifier) );
+	wall1Vert->push_back( Vec3( 0 - modifier, 0 + half, 0 - modifier - out) );
+	wall1Vert->push_back( Vec3( 0 + modifier, 0 + half, 0 - modifier - out) );
+	wall1Vert->push_back( Vec3( 0 + modifier, 0, 0 - modifier) );
+	
+	wallGeoLeft->setVertexArray(wall1Vert);
+	wallGeoLeft->setTexCoordArray(0,texcoords);
+        wallGeoLeft->setNormalArray(normals);
+    	wallGeoLeft->setNormalBinding(Geometry::BIND_OVERALL);
+    	wallGeoLeft->setColorArray(colors);
+	wallGeoLeft->setColorBinding(Geometry::BIND_OVERALL);	
+	wallGeoLeft->addPrimitiveSet(new DrawArrays(GL_QUADS,0,4)); //I am not sure what this actuall does
+	
+	//verticies for the wall bottom right
+	ref_ptr<Vec3Array> wall2Vert = new Vec3Array();
+	wall2Vert->push_back( Vec3( 0 + modifier, 0, 0 + modifier) );	
+	wall2Vert->push_back( Vec3( 0 - modifier , 0, 0 + modifier) );
+	wall2Vert->push_back( Vec3( 0 - modifier, 0 + half, 0 + modifier + out) );
+	wall2Vert->push_back( Vec3( 0 + modifier, 0 + half, 0 + modifier + out) );
+	wall2Vert->push_back( Vec3( 0 + modifier, 0, 0 + modifier) );
+	
+	wallGeoRight->setVertexArray(wall2Vert);
+	wallGeoRight->setTexCoordArray(0,texcoords);
+        wallGeoRight->setNormalArray(normals);
+    	wallGeoRight->setNormalBinding(Geometry::BIND_OVERALL);
+    	wallGeoRight->setColorArray(colors);
+	wallGeoRight->setColorBinding(Geometry::BIND_OVERALL);	
+	wallGeoRight->addPrimitiveSet(new DrawArrays(GL_QUADS,0,4)); //I am not sure what this actuall does
+	
+	//verticies for the wall top left
+	ref_ptr<Vec3Array> wall3Vert = new Vec3Array();
+	wall3Vert->push_back( Vec3( 0 + modifier, 0 + half, 0 - modifier - out) );	
+	wall3Vert->push_back( Vec3( 0 - modifier, 0 + half, 0 - modifier - out) );
+	wall3Vert->push_back( Vec3( 0 - modifier , height, 0 - modifier) );
+	wall3Vert->push_back( Vec3( 0 + modifier, height, 0 - modifier) );
+	wall3Vert->push_back( Vec3( 0 + modifier, 0 + half, 0 - modifier - out) );
+	
+	wallGeoLeftTop->setVertexArray(wall3Vert);
+	wallGeoLeftTop->setTexCoordArray(0,texcoords);
+        wallGeoLeftTop->setNormalArray(normals);
+    	wallGeoLeftTop->setNormalBinding(Geometry::BIND_OVERALL);
+    	wallGeoLeftTop->setColorArray(colors);
+	wallGeoLeftTop->setColorBinding(Geometry::BIND_OVERALL);	
+	wallGeoLeftTop->addPrimitiveSet(new DrawArrays(GL_QUADS,0,4)); //I am not sure what this actuall does
+	
+	//verticies for the wall top right
+	ref_ptr<Vec3Array> wall4Vert = new Vec3Array();
+	wall4Vert->push_back( Vec3( 0 + modifier, 0 + half, 0 + modifier + out) );	
+	wall4Vert->push_back( Vec3( 0 - modifier, 0 + half, 0 + modifier + out) );
+	wall4Vert->push_back( Vec3( 0 - modifier , height, 0 + modifier) );
+	wall4Vert->push_back( Vec3( 0 + modifier, height, 0 + modifier) );
+	wall4Vert->push_back( Vec3( 0 + modifier, 0 + half, 0 + modifier + out) );
+	
+	wallGeoRightTop->setVertexArray(wall4Vert);
+	wallGeoRightTop->setTexCoordArray(0,texcoords);
+        wallGeoRightTop->setNormalArray(normals);
+    	wallGeoRightTop->setNormalBinding(Geometry::BIND_OVERALL);
+    	wallGeoRightTop->setColorArray(colors);
+	wallGeoRightTop->setColorBinding(Geometry::BIND_OVERALL);	
+	wallGeoRightTop->addPrimitiveSet(new DrawArrays(GL_QUADS,0,4)); //I am not sure what this actuall does
+	
+	//set textures
+	road_node->setStateSet(finishSet);
+	roof_node->setStateSet(finishSet);
+	wall_node->setStateSet(finishSet);
 	
 	//add geometry to respective nodes
 	road_node->addDrawable(roadGeo);
