@@ -18,7 +18,8 @@ class CCMap
 	private:
 		ref_ptr<Group> mapNode;
 		void buildRoadSection(float x, float y, float z, ref_ptr<Geode> road, ref_ptr<Geode> wall);
-		void buildStrightSection(float x, float y, float z, ref_ptr<Geode> g);
+		void buildStrightSection(float x, float y, float z, float rotation, ref_ptr<Group> g);
+		void build90Section(float x, float y, float z, float rotation, ref_ptr<Group> g);
 		//these are for the textures
 		ref_ptr<StateSet> straightRoadSet;
 		ref_ptr<StateSet> road90Set;
@@ -26,6 +27,7 @@ class CCMap
 		ref_ptr<StateSet> finishSet;
 		ref_ptr<StateSet> checkpointSet;
 		ref_ptr<StateSet> wallSet;
+		ref_ptr<StateSet> roofSet;
 		void loadTextures();
 		ref_ptr<Vec2Array> texcoords;
 		ref_ptr<Vec3Array> normals;

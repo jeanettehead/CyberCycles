@@ -48,7 +48,7 @@ void StateManager::enterMenu(osg::ref_ptr<osg::Group> root, ref_ptr<osgViewer::V
 	cam->setClearColor(osg::Vec4(0, 0, 255, 1));
  	
  	// set dimensions of the view volume
-	cam->setProjectionMatrixAsPerspective(30, 4.0 / 3.0, 0.1, 100);
+	cam->setProjectionMatrixAsPerspective(45, 16.0 / 9.0, 0.1, 100);
 	cam->setViewMatrixAsLookAt(
 		osg::Vec3(-7.5, 7.5, 0),// location
 		osg::Vec3(0, 0, 0),	// gaze at
