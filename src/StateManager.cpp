@@ -140,12 +140,12 @@ void StateManager::enterGame(osg::ref_ptr<osg::Group> root, ref_ptr<osgViewer::V
 	cam->setClearColor(osg::Vec4(0, 0, 0, 1));
  	
  	// set dimensions of the view volume
-	/*cam->setProjectionMatrixAsPerspective(30, 4.0 / 3.0, 0.1, 100);
+	cam->setProjectionMatrixAsPerspective(45, 16.0/ 9.0, 0.1, 100);
 	cam->setViewMatrixAsLookAt(
-		osg::Vec3(0, 7.5, -7.5),// location
-		gameObj->getPlayer()->getPosition(),	// gaze at
-		osg::Vec3(0, 1, 0));	// up vector
-	//===== end camera code chunk ===== */
+		osg::Vec3(0, 7.5, -7.5), 		//location
+		gameObj->getPlayer()->getPosition(),	//gaze at
+		osg::Vec3(0, 1, 0));			//up vector
+	//===== end camera code chunk ===== 
 	
 	gameObj->setCameraOnPlayer(cam);
 }
