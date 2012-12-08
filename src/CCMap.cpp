@@ -55,37 +55,37 @@ void CCMap::loadTextures()
 	roofTexture->setDataVariance(Object::DYNAMIC);
 	
 	// load an image by reading a file: 
-	ref_ptr<Image> rtImage = osgDB::readImageFile("../assets/images/tunnel/road.png");
+	ref_ptr<Image> rtImage = osgDB::readImageFile("../assets/images/tunnel/grid.png");
 	if (!rtImage)
 	{
 		std::cout << " couldn't find road texture, quiting." << std::endl;
 	}
-	ref_ptr<Image> wtImage = osgDB::readImageFile("../assets/images/tunnel/wall.png");
+	ref_ptr<Image> wtImage = osgDB::readImageFile("../assets/images/tunnel/grid.png");
 	if (!wtImage)
 	{
 		std::cout << " couldn't find wall texture, quiting." << std::endl;
 	}
-	ref_ptr<Image> r90tImage = osgDB::readImageFile("../assets/images/tunnel/road90.png");
+	ref_ptr<Image> r90tImage = osgDB::readImageFile("../assets/images/tunnel/grid.png");
 	if (!r90tImage)
 	{
 		std::cout << " couldn't find 90 texture, quiting." << std::endl;
 	}
-	ref_ptr<Image> stImage = osgDB::readImageFile("../assets/images/tunnel/start.png");
+	ref_ptr<Image> stImage = osgDB::readImageFile("../assets/images/tunnel/gridStart.png");
 	if (!stImage)
 	{
 		std::cout << " couldn't find start texture, quiting." << std::endl;
 	}
-	ref_ptr<Image> ftImage = osgDB::readImageFile("../assets/images/tunnel/finish.png");
+	ref_ptr<Image> ftImage = osgDB::readImageFile("../assets/images/tunnel/gridFinish.png");
 	if (!ftImage)
 	{
 		std::cout << " couldn't find finish texture, quiting." << std::endl;
 	}
-	ref_ptr<Image> ctImage = osgDB::readImageFile("../assets/images/tunnel/checkpoint.png");
+	ref_ptr<Image> ctImage = osgDB::readImageFile("../assets/images/tunnel/gridCheckpoint.png");
 	if (!ctImage)
 	{
 		std::cout << " couldn't find checpoint texture, quiting." << std::endl;
 	}
-	ref_ptr<Image> ttImage = osgDB::readImageFile("../assets/images/tunnel/roof.png");
+	ref_ptr<Image> ttImage = osgDB::readImageFile("../assets/images/tunnel/grid.png");
 	if (!ttImage)
 	{
 		std::cout << " couldn't find checpoint texture, quiting." << std::endl;
@@ -122,8 +122,13 @@ void CCMap::buildBuiltInWorld()
 			buildStrightSection(x, 0, z, 0, mapNode);
 		}
 	}
-	buildCheckpointSection(50, 0, 0, 0, mapNode);
-	buildFinishSection(55, 0, 0, 0, mapNode);
+	build90Section(50, 0, 0, 0, mapNode);
+	for(z = 5; z < 50; z = z + genericRoadWidth)
+	{
+		buildStrightSection(50, 0, z, M_PI/2.0f, mapNode);
+	}
+	//buildCheckpointSection(50, 0, 0, 0, mapNode);
+	//buildFinishSection(55, 0, 0, 0, mapNode);
 }
 
 /* Creats a road piece at the given loacation.

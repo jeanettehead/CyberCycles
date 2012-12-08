@@ -16,9 +16,10 @@ class ControlledCycle
 		void setCyclePosition(float x, float y, float z);
 		void setCyclePosition(Vec3 v);
 		double rotation;
+		ref_ptr<PositionAttitudeTransform> transformNode;
+		Node detectCollision();
 		
 	private:
-		ref_ptr<PositionAttitudeTransform> transformNode;
 		ref_ptr<Group> cycle;
 		ref_ptr<Node> model;
 };
