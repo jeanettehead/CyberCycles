@@ -17,6 +17,7 @@ class CCMap
 		
 	private:
 		ref_ptr<Group> mapNode;
+		ref_ptr<Group> obs;
 		//void buildRoadSection(float x, float y, float z, ref_ptr<Geode> road, ref_ptr<Geode> wall);
 		void buildStrightSection(float x, float y, float z, float rotation, ref_ptr<Group> g);
 		void build90Section(float x, float y, float z, float rotation, ref_ptr<Group> g);

@@ -1,4 +1,5 @@
 #include "CCMap.h"
+#include "plusObstacle.h"
 #include <osg/Light>
 #include <osg/PositionAttitudeTransform>
 #include <iostream>
@@ -111,6 +112,8 @@ void CCMap::loadTextures()
 void CCMap::buildBuiltInWorld()
 {
 	mapNode = new Group();
+	obs = new Group();
+	mapNode->addChild(obs);
 	
 	float x;
 	float z;
@@ -120,7 +123,11 @@ void CCMap::buildBuiltInWorld()
 		for(z = 0; z < 5; z = z + genericRoadWidth)
 		{
 			if(x != 0)
+			{
 				buildStrightSection(x, 0, z, 0, mapNode);
+				PlusObstacle* po = new PlusObstacle(startSet, x, 1.0f, z);
+				obs->addChild(po->obsNode);
+			}
 		}
 	}
 	/*build90Section(50, 0, 0, 0, mapNode);
