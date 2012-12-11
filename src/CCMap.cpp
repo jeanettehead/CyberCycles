@@ -115,18 +115,19 @@ void CCMap::buildBuiltInWorld()
 	float x;
 	float z;
 	buildStartSection(0, 0, 0, 0, mapNode);
-	for(x = 5; x < 50; x = x + genericRoadWidth)
+	for(x = -10; x < 500; x = x + genericRoadWidth)
 	{
 		for(z = 0; z < 5; z = z + genericRoadWidth)
 		{
-			buildStrightSection(x, 0, z, 0, mapNode);
+			if(x != 0)
+				buildStrightSection(x, 0, z, 0, mapNode);
 		}
 	}
-	build90Section(50, 0, 0, 0, mapNode);
+	/*build90Section(50, 0, 0, 0, mapNode);
 	for(z = 5; z < 50; z = z + genericRoadWidth)
 	{
 		buildStrightSection(50, 0, z, M_PI/2.0f, mapNode);
-	}
+	}*/
 	//buildCheckpointSection(50, 0, 0, 0, mapNode);
 	//buildFinishSection(55, 0, 0, 0, mapNode);
 }

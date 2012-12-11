@@ -34,7 +34,7 @@ void ControlledCycle::setCameraPosition(ref_ptr<Camera> cam)
 {
 	Vec3 location = transformNode->getPosition() + Vec3(-2.0 * cos(rotation), 2.5, -2.0 * sin(rotation));
 	cam->setViewMatrixAsLookAt(
-		transformNode->getPosition() + Vec3(-15.0 * cos(rotation), 2.5, -15.0 * sin(rotation)),
+		transformNode->getPosition() + Vec3(-15.0, 2.5, 0),
 		transformNode->getPosition() + Vec3(0, 1.5, 0),
 		osg::Vec3(0, 1, 0));
 }

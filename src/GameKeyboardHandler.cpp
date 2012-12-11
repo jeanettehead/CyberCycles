@@ -20,7 +20,7 @@ bool GameKeyboardHandler::handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActi
 	//this will need to be changed
 	if(ea.getEventType() == osgGA::GUIEventAdapter::KEYDOWN)
 	{
-		if(ea.getKey() == 'w')
+		/*if(ea.getKey() == 'w')
 		{
 			cc->setCyclePosition(Vec3(1.0 * cos(cc->rotation), 0, 1.0 * sin(cc->rotation)) + cc->getPosition());
 			cc->setCameraPosition(sm->cam);
@@ -29,19 +29,38 @@ bool GameKeyboardHandler::handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActi
 		{
 			cc->setCyclePosition(cc->getPosition() - Vec3(1.0 * cos(cc->rotation), 0, 1.0 * sin(cc->rotation)));
 			cc->setCameraPosition(sm->cam);
-		}
+		}*/
 		if(ea.getKey() == 'd')
 		{
-			cc->rotation = cc->rotation + M_PI/36.0;				
-			cc->transformNode->setAttitude(Quat(M_PI, Vec3d(1.0,0.0,0.0), cc->rotation, Vec3d(0.0,-1.0,0.0), 0.0, Vec3d(0.0,0.0,0.0)));
-			cc->setCameraPosition(sm->cam);
+			//cc->rotation = cc->rotation + M_PI/36.0;				
+			//cc->transformNode->setAttitude(Quat(M_PI, Vec3d(1.0,0.0,0.0), cc->rotation, Vec3d(0.0,-1.0,0.0), 0.0, Vec3d(0.0,0.0,0.0)));
+			if(cc->getPosition().z() + 0.25 < 2.5)
+			{
+				cc->setCyclePosition(cc->getPosition() + Vec3(0, 0, 0.25));
+				cc->setCameraPosition(sm->cam);
+			}
 		}
 		if(ea.getKey() == 'a')
 		{
-			cc->rotation = cc->rotation - M_PI/36.0;				
-			cc->transformNode->setAttitude(Quat(M_PI, Vec3d(1.0,0.0,0.0), cc->rotation, Vec3d(0.0,-1.0,0.0), 0.0, Vec3d(0.0,0.0,0.0)));
-			cc->setCameraPosition(sm->cam);
+			//cc->rotation = cc->rotation - M_PI/36.0;				
+			//cc->transformNode->setAttitude(Quat(M_PI, Vec3d(1.0,0.0,0.0), cc->rotation, Vec3d(0.0,-1.0,0.0), 0.0, Vec3d(0.0,0.0,0.0)));
+			if(cc->getPosition().z() - 0.25 > -2.5)
+			{
+				cc->setCyclePosition(cc->getPosition() - Vec3(0, 0, 0.25));
+				cc->setCameraPosition(sm->cam);
+			}
 		}
 	}
+	
+	cc->setCyclePosition(Vec3(0.5 * cos(cc->rotation), 0, 0.5 * sin(cc->rotation)) + cc->getPosition());
+	cc->setCameraPosition(sm->cam);
+	
+	if(cc->getPosition().x() > 450)
+	{
+		cc->setCyclePosition(Vec3(0, 0, 0));
+		cc->setCameraPosition(sm->cam);
+		cout << "repeat" << endl;
+	}
+	
 	return true;
 }
